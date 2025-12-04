@@ -1,0 +1,85 @@
+<section class="home-usps">
+  <div class="page-width">
+    <div class="home-categories__header">
+      <h2 class="home-categories__title">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="home-usps__row">
+      {% for block in section.blocks %}
+        <div class="home-usps__item" {{ block.shopify_attributes }}>
+          {% if block.settings.icon != blank %}
+            {{ block.settings.icon | image_url: width: 64 | image_tag: loading: 'lazy' }}
+          {% elsif block.settings.fallback_icon != blank %}
+            <span class="home-usps__fallback-icon">{{ block.settings.fallback_icon | raw }}</span>
+          {% endif %}
+          <span class="home-usps__title">{{ block.settings.title }}</span>
+          <span class="home-usps__text">{{ block.settings.text }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home vantagens",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Porque escolher a GlobalBrico?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Vantagem",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Ícone"
+        },
+        {
+          "type": "text",
+          "id": "fallback_icon",
+          "label": "Emoji/ícone alternativo",
+          "default": "🚚"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Entregas 24H Portugal continental"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto",
+          "default": "Pagamentos 100% seguros"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Home vantagens",
+      "blocks": [
+        {
+          "type": "usp"
+        },
+        {
+          "type": "usp"
+        },
+        {
+          "type": "usp"
+        },
+        {
+          "type": "usp"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+<header class="gb-header">
+  {% if section.settings.show_topbar %}
+    <div class="gb-topbar" data-topbar>
+      <div class="page-width gb-topbar__inner">
+        <div class="gb-topbar__text">
+          <img src="{{ 'icon-box.svg' | asset_url }}" alt="" width="20" height="20" loading="lazy" style="margin-right:8px;">
+          <span>{{ section.settings.topbar_text }}</span>
+        </div>
+        {% if section.settings.topbar_dismissible %}
+          <button class="gb-topbar__close" type="button" aria-label="{{ 'general.accessibility.close' | t | default: 'Fechar' }}" data-topbar-close>
+            &times;
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="page-width gb-mainbar">
+    <a href="{{ routes.root_url }}" class="gb-logo" aria-label="{{ shop.name }}">
+      {% if settings.logo != blank %}
+        {% liquid
+          assign logo_alt = settings.logo.alt | default: shop.name | escape
+          assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio | default: 50
+        %}
+        {{ settings.logo | image_url: width: 260 | image_tag: width: settings.logo_width, height: logo_height, alt: logo_alt, class: 'gb-logo__img' }}
+      {% else %}
+        <img src="{{ 'ba817d301cee7ff0e647f43db1727c6b0d523bf1.png' | asset_url }}" alt="{{ shop.name }}" width="317" height="65" loading="lazy" class="gb-logo__img">
+      {% endif %}
+    </a>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="gb-search">
+      <img src="{{ 'icon-search.svg' | asset_url }}" alt="" width="22" height="22" loading="lazy">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder | escape }}">
+    </form>
+
+    <div class="gb-icons">
+      {% if shop.customer_accounts_enabled and section.settings.show_account_icon %}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="{{ 'customer.account_fallback' | t | default: 'Conta' }}">
+          <img class="gb-icon" src="{{ 'icon-account.svg' | asset_url }}" alt="" width="30" height="30" loading="lazy">
+        </a>
+      {% endif %}
+      <a href="{{ routes.cart_url }}" class="gb-cart" id="cart-icon-bubble" aria-label="{{ 'templates.cart.cart' | t | default: 'Carrinho' }}">
+        {% if cart == empty %}
+          <img class="gb-icon" src="{{ 'icon-cart-empty.svg' | asset_url }}" alt="" width="30" height="30" loading="lazy">
+        {% else %}
+          <img class="gb-icon" src="{{ 'icon-cart.svg' | asset_url }}" alt="" width="30" height="30" loading="lazy">
+        {% endif %}
+        {% if cart != empty %}
+          <span class="cart-count-bubble">
+            {% if cart.item_count < 100 %}
+              {{ cart.item_count }}
+            {% else %}
+              99+
+            {% endif %}
+          </span>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+
+  {% assign primary_links = "Produtos|/pages/produtos,Ferramentas|#,Ferragens|#,Pintura|#,Jardim|#,Promoções|/pages/promocoes" | split: "," %}
+  {% assign secondary_links = "Serviços|#,Sobre Nós|#,Blog|#,Contactos|#" | split: "," %}
+  <nav class="gb-nav-bar" aria-label="Principal">
+    <div class="gb-nav__menu gb-nav__menu--primary">
+      {% for item in primary_links %}
+        {% assign parts = item | split: "|" %}
+        <a class="gb-nav__link" href="{{ parts[1] }}">{{ parts[0] | upcase }}</a>
+      {% endfor %}
+    </div>
+    <div class="gb-nav__menu gb-nav__menu--secondary">
+      {% for item in secondary_links %}
+        {% assign parts = item | split: "|" %}
+        <a class="gb-nav__link" href="{{ parts[1] }}">{{ parts[0] | upcase }}</a>
+      {% endfor %}
+    </div>
+  </nav>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_topbar",
+      "default": true,
+      "label": "Mostrar barra superior"
+    },
+    {
+      "type": "text",
+      "id": "topbar_text",
+      "default": "Portes de envio gratuitos",
+      "label": "Texto da barra superior"
+    },
+    {
+      "type": "checkbox",
+      "id": "topbar_dismissible",
+      "default": true,
+      "label": "Permitir fechar barra superior"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder da pesquisa",
+      "default": "Pesquisar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_icon",
+      "label": "Mostrar ícone da conta",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
+{% endschema %}

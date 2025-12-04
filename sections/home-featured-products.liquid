@@ -1,0 +1,139 @@
+<section class="home-products">
+  <div class="page-width">
+    {% unless section.settings.hide_header %}
+      <div class="home-products__header">
+        <div>
+          <h2 class="home-products__title">Produtos</h2>
+          <p class="home-products__text">Na GlobalBrico encontra uma ampla gama de produtos de bricolage, <br /> construção, ferramentas, jardinagem e decoração.</p>
+        </div>
+        {% if section.settings.button_label != blank %}
+          <a class="gb-btn" href="{{ section.settings.button_link }}" style="margin: -53px -1px 51px 10px;">{{ section.settings.button_label }}</a>
+        {% endif %}
+      </div>
+    {% endunless %}
+
+    <div class="home-products__grid">
+      {% assign featured_collection = collections[section.settings.collection] %}
+      {% if featured_collection != blank %}
+        {% for product in featured_collection.products limit: section.settings.products_to_show %}
+          <div class="home-product-card">
+            <a href="{{ product.url }}" aria-label="{{ product.title }}">
+              {% assign placeholder = 'placeholder.png' | asset_url %}
+              {% if product.featured_media %}
+                {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy' }}
+              {% else %}
+                <img src="{{ placeholder }}" alt="{{ product.title }}" loading="lazy" style="width:100%;height:180px;object-fit:contain;background:#fff;">
+              {% endif %}
+            </a>
+            <div>
+              <h3 style="margin:0 0 6px;">{{ product.title }}</h3>
+              <div class="home-product-card__price">
+                {% if product.compare_at_price_max > product.price %}
+                  <span>{{ product.price | money }}</span>
+                  <span style="color: var(--gb-muted); text-decoration: line-through; font-weight: 500;">{{ product.compare_at_price_max | money }}</span>
+                {% else %}
+                  <span>{{ product.price | money }}</span>
+                {% endif %}
+              </div>
+            </div>
+            <a class="gb-btn" href="{{ product.url }}">{{ section.settings.product_button_label }}</a>
+          </div>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..4) %}
+          <div class="home-product-card">
+            {% if i == 1 %}
+              <img src="{{ '69ed603c5bde711f43c0a4ce82be83dd7273.jpg' | asset_url }}" alt="Martelo Combinado KH 5 G AEG" loading="lazy" style="width:100%;height:180px;object-fit:contain;background:#fff;">
+              <h3 style="margin:12px 0 6px;">Martelo Combinado KH 5 G AEG</h3>
+              <div class="home-product-card__price">{{ 50000 | money }}</div>
+              <a class="gb-btn" href="#">{{ section.settings.product_button_label }}</a>
+            {% elsif i == 2 %}
+              <img src="{{ '9f6783217678b36f2d3b35d230f2231a1af80233.jpg' | asset_url }}" alt="1,90 M Carril Sup. IN.15. 953 Fixação ao Teto Inox" loading="lazy" style="width:100%;height:180px;object-fit:contain;background:#fff;transform:scale(1.5);">
+              <h3 style="margin:12px 0 6px;">1,90 M Carril Sup. IN.15. 953 Fixação ao Teto Inox</h3>
+              <div class="home-product-card__price">{{ 50000 | money }}</div>
+              <a class="gb-btn" href="#">{{ section.settings.product_button_label }}</a>
+            {% elsif i == 3 %}
+              <img src="{{ '4047cab007956911e8f128b68b16d98192f426b6.jpg' | asset_url }}" alt="1 kg Aquaprotect Professional SILIC. MS LIQ. BRANCO" loading="lazy" style="width:100%;height:180px;object-fit:contain;background:#fff;">
+              <h3 style="margin:12px 0 6px;">1 kg Aquaprotect Professional SILIC. MS LIQ. BRANCO</h3>
+              <div class="home-product-card__price">{{ 50000 | money }}</div>
+              <a class="gb-btn" href="#">{{ section.settings.product_button_label }}</a>
+            {% elsif i == 4 %}
+              <img src="{{ '72a29bf35d451169efa6c142aaf839e945750a57.jpg' | asset_url }}" alt="Corta relva a gas. c/tração 46cm Sioux 855 ZSG-V23 Garland" loading="lazy" style="width:100%;height:180px;object-fit:contain;background:#fff;">
+              <h3 style="margin:12px 0 6px;">Corta relva a gas. c/tração 46cm Sioux 855 ZSG-V23 Garland</h3>
+              <div class="home-product-card__price">{{ 50000 | money }}</div>
+              <a class="gb-btn" href="#">{{ section.settings.product_button_label }}</a>
+            {% else %}
+              {% assign placeholder = 'placeholder.png' | asset_url %}
+              <img src="{{ placeholder }}" alt="Produto exemplo {{ i }}" loading="lazy" style="width:100%;height:180px;object-fit:contain;background:#fff;">
+              <h3 style="margin:12px 0 6px;">Produto exemplo {{ i }}</h3>
+              <div class="home-product-card__price">{{ 50000 | money }}</div>
+              <a class="gb-btn" href="#">{{ section.settings.product_button_label }}</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home produtos",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Produtos"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subtítulo",
+      "default": "Na GlobalBrico encontra uma ampla gama de produtos de bricolage, construção, ferramentas, jardinagem e decoração."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Coleção"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Produtos a mostrar"
+    },
+    {
+      "type": "text",
+      "id": "product_button_label",
+      "label": "Texto do botão do produto",
+      "default": "Comprar"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto do botão",
+      "default": "Comprar"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link do botão"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_header",
+      "label": "Ocultar cabeçalho",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home produtos"
+    }
+  ]
+}
+{% endschema %}
