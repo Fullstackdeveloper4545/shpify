@@ -1,0 +1,150 @@
+{%- style -%}
+.about-us {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 16px 64px;
+  display: grid;
+  gap: 42px;
+}
+.about-us__hero {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 320px;
+}
+.about-us__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.about-us__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+.about-us__hero h1 {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  line-height: 1.2;
+}
+.about-us__hero p {
+  color: #fff;
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+}
+.about-us__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+.about-us__title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+.about-us__text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2f2f2f;
+}
+.about-us__image img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+.about-us__card {
+  background: #f7f7f7;
+  border-radius: 14px;
+  padding: 20px;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #1f1f1f;
+}
+@media (max-width: 749px) {
+  .about-us {
+    padding: 32px 16px 48px;
+    gap: 32px;
+  }
+  .about-us__hero h1 { font-size: 24px; }
+  .about-us__hero p { font-size: 14px; }
+  .about-us__title { font-size: 22px; }
+}
+{%- endstyle -%}
+
+<section class="about-us">
+  <div class="about-us__hero">
+    {% if section.settings.hero_image != blank %}
+      {{ section.settings.hero_image | image_url: width: 2000 | image_tag: alt: section.settings.hero_heading, loading: 'lazy' }}
+    {% endif %}
+    <div class="about-us__hero-overlay">
+      <div>
+        <h1>{{ section.settings.hero_heading }}</h1>
+        <p>{{ section.settings.hero_subheading }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-us__grid">
+    <div>
+      <h2 class="about-us__title">{{ section.settings.history_heading }}</h2>
+      <div class="about-us__text">{{ section.settings.history_text }}</div>
+    </div>
+    <div class="about-us__image">
+      {% if section.settings.history_image != blank %}
+        {{ section.settings.history_image | image_url: width: 1200 | image_tag: alt: section.settings.history_heading, loading: 'lazy' }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="about-us__grid">
+    <div class="about-us__image">
+      {% if section.settings.mission_image != blank %}
+        {{ section.settings.mission_image | image_url: width: 1200 | image_tag: alt: section.settings.mission_heading, loading: 'lazy' }}
+      {% endif %}
+    </div>
+    <div>
+      <h2 class="about-us__title">{{ section.settings.mission_heading }}</h2>
+      <div class="about-us__text">{{ section.settings.mission_text }}</div>
+    </div>
+  </div>
+
+  <div class="about-us__card">
+    <h3 style="margin-top:0;margin-bottom:8px;font-size:20px;font-weight:700;">{{ section.settings.founders_heading }}</h3>
+    <div>{{ section.settings.founders_text }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sobre nós",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Imagem hero" },
+    { "type": "text", "id": "hero_heading", "label": "Título hero", "default": "GlobalBrico - A sua Loja de Bricolage e Construção" },
+    { "type": "textarea", "id": "hero_subheading", "label": "Subtítulo hero", "default": "Na GlobalBrico, orgulhamo-nos de ser uma referência no mercado de bricolage, materiais de construção e soluções para casa e jardim." },
+    { "type": "text", "id": "history_heading", "label": "Título história", "default": "A nossa História" },
+    { "type": "richtext", "id": "history_text", "label": "Texto história", "default": "<p>Fundada em 2013, a GlobalBrico começou como um projeto local e rapidamente se expandiu, tornando-se uma referência no setor. Hoje, orgulhamo-nos de servir milhares de clientes em todo o país, sempre com foco na qualidade, inovação e confiança.</p><p>Trabalhamos diariamente para oferecer uma experiência completa, com uma vasta gama de produtos, marcas de confiança e serviços ajustados às necessidades dos nossos clientes.</p>" },
+    { "type": "image_picker", "id": "history_image", "label": "Imagem história" },
+    { "type": "text", "id": "mission_heading", "label": "Título missão", "default": "A nossa missão" },
+    { "type": "richtext", "id": "mission_text", "label": "Texto missão", "default": "<p>Acreditamos que cada projeto, pequeno ou grande, merece as melhores ferramentas, materiais e apoio especializado.</p>" },
+    { "type": "image_picker", "id": "mission_image", "label": "Imagem missão" },
+    { "type": "text", "id": "founders_heading", "label": "Título fundadores", "default": "Mensagem dos Fundadores" },
+    { "type": "richtext", "id": "founders_text", "label": "Texto fundadores", "default": "<p>Na GlobalBrico, contamos com uma equipa dedicada que acredita no poder do trabalho em equipa, da inovação e da proximidade com os nossos clientes. Estamos sempre disponíveis para apoiar, ouvir sugestões e encontrar as melhores soluções para cada projeto.</p>" }
+  ],
+  "presets": [
+    { "name": "Sobre nós" }
+  ]
+}
+{% endschema %}
