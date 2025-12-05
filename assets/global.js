@@ -1197,6 +1197,34 @@ class AccountIcon extends HTMLElement {
 
 customElements.define('account-icon', AccountIcon);
 
+// FAQ toggle (shared for home/about)
+document.addEventListener('click', (event) => {
+  const trigger = event.target.closest('[data-faq-trigger]');
+  if (!trigger) return;
+
+  const faqRoot = trigger.closest('.home-faq');
+  if (!faqRoot) return;
+
+  const answer = trigger.nextElementSibling;
+  if (!answer) return;
+
+  const answers = faqRoot.querySelectorAll('.home-faq__answer');
+  const triggers = faqRoot.querySelectorAll('[data-faq-trigger]');
+  const isHidden = answer.hasAttribute('hidden');
+
+  answers.forEach((el) => el.setAttribute('hidden', true));
+  triggers.forEach((btn) => {
+    const icon = btn.querySelector('span[aria-hidden]');
+    if (icon) icon.textContent = '+';
+  });
+
+  if (isHidden) {
+    answer.removeAttribute('hidden');
+    const icon = trigger.querySelector('span[aria-hidden]');
+    if (icon) icon.textContent = '−';
+  }
+});
+
 class BulkAdd extends HTMLElement {
   static ASYNC_REQUEST_DELAY = 250;
 

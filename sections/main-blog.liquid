@@ -16,6 +16,20 @@
   }
 {%- endstyle -%}
 
+<section class="product-hero">
+  <div class="product-hero__bg">
+    {% if section.settings.hero_image != blank %}
+      {{ section.settings.hero_image | image_url: width: 2000 | image_tag: alt: section.settings.hero_heading, loading: 'lazy' }}
+    {% else %}
+      <img src="{{ 'a6fd3bca08ab5825088a72a6abf3b36e70d33c77.jpg' | asset_url }}" alt="" loading="lazy">
+    {% endif %}
+  </div>
+  <div class="product-hero__content">
+    <h2>{{ section.settings.hero_heading }}</h2>
+    <p>{{ section.settings.hero_subheading }}</p>
+  </div>
+</section>
+
 {%- paginate blog.articles by 6 -%}
   <div class="main-blog page-width section-{{ section.id }}-padding">
     <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -50,12 +64,53 @@
   </div>
 {%- endpaginate -%}
 
+{%- liquid
+  assign show_newsletter = section.settings.show_newsletter | default: true
+-%}
+
+{%- if show_newsletter -%}
+  <section class="section-space">
+    <div class="page-width">
+      <div class="home-newsletter">
+        <div class="home-newsletter__inner">
+          <h2>{{ section.settings.newsletter_heading }}</h2>
+          <p>{{ section.settings.newsletter_text | escape | newline_to_br }}</p>
+          <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="home-newsletter__form">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" name="contact[email]" placeholder="{{ section.settings.newsletter_placeholder | escape }}" required>
+            <button class="gb-btn" type="submit">{{ section.settings.newsletter_button_label }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.main-blog.name",
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Imagem hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Título hero",
+      "default": "Tudo o que precisa para bricolage,<br /> construção e jardim - num só lugar"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subheading",
+      "label": "Subtítulo hero",
+      "default": "Na GlobalBrico, encontra uma loja online completa com milhares<br /> de produtos de bricolage, construção, ferramentas, tintas,<br /> eletricidade, canalização e jardinagem."
+    },
     {
       "type": "select",
       "id": "layout",
@@ -137,6 +192,40 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Mostrar newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Título",
+      "default": "Receba dicas e promoções exclusivas"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Texto",
+      "default": "Subscreva a nossa newsletter e receba novidades, promoções e inspirações para os seus projetos de bricolagem."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "Texto do botão",
+      "default": "Enviar"
     }
   ]
 }

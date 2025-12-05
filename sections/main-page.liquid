@@ -681,6 +681,186 @@
     </div>
   </section>
 
+{% elsif page.handle == 'contactos' %}
+  <section class="home-hero home-hero--blog">
+    <div class="home-hero__media">
+      <img
+        src="{{ '3ad4a2f2854ee16114ba3c780c508e78b59e8578.jpg' | asset_url }}"
+        alt="{{ page.title | escape }}"
+        loading="lazy"
+        style="width:100%;height:100%;object-fit:cover;"
+      >
+    </div>
+    <div class="home-hero__overlay"></div>
+    <div class="page-width">
+      <div class="home-hero__inner" style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:360px;padding:64px 16px;">
+        <h1
+          class="home-hero__heading"
+          style="font-family:Poppins;font-weight:600;font-size:36px;line-height:140%;letter-spacing:0;text-align:center;"
+        >
+          Tem dúvidas sobre os nossos<br />produtos, encomendas ou serviços?
+        </h1>
+        <p
+          class="home-hero__text"
+          style="font-family:Poppins;font-weight:500;font-size:18px;line-height:135%;letter-spacing:0;text-align:center;"
+        >
+          A equipa da GlobalBrico está pronta para o ajudar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-contact section-space" style="margin: 100px 0 80px 0;">
+    <div class="page-width">
+      <div class="home-contact__grid">
+        <div>
+          <h2>Tem dúvidas sobre os nossos produtos, encomendas ou assistência técnica?</h2>
+          <p>Estamos aqui para ajudar. Preencha o formulário e responderemos com a maior brevidade possível.</p>
+        </div>
+        <div>
+          <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="home-contact__form">
+            <input type="hidden" name="form_type" value="contact">
+            <input type="hidden" name="utf8" value="✓">
+            <div>
+              <label for="ContactFormName">Nome</label>
+              <input type="text" name="contact[name]" id="ContactFormName" value="" required>
+            </div>
+            <div>
+              <label for="ContactFormPhone">Telefone</label>
+              <input type="tel" name="contact[phone]" id="ContactFormPhone" value="">
+            </div>
+            <div>
+              <label for="ContactFormEmail">Email</label>
+              <input type="email" name="contact[email]" id="ContactFormEmail" value="" required>
+            </div>
+            <div>
+              <label for="ContactFormMessage">Mensagem</label>
+              <textarea name="contact[body]" id="ContactFormMessage"></textarea>
+            </div>
+            <button type="submit" class="gb-btn">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space">
+    <div class="page-width">
+      <div class="home-newsletter">
+        <div class="home-newsletter__inner">
+          <h2>Receba dicas e promoções exclusivas</h2>
+          <p>Subscreva a nossa newsletter e receba novidades, promoções <br> e inspirações para os seus projetos de bricolagem.</p>
+          <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="home-newsletter__form">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" name="contact[email]" placeholder="Email" required="">
+            <button class="gb-btn" type="submit">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+    <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {{ page.content }}
+    </div>
+  </div>
+
+{% elsif page.handle == 'blog' %}
+  {%- liquid
+    assign blog_handle = section.settings.blog_handle
+    if blog_handle == blank
+      assign blog_handle = 'news'
+    endif
+    assign selected_blog = blogs[blog_handle]
+    if selected_blog == nil
+      assign selected_blog = blogs['blog']
+    endif
+    assign articles_limit = section.settings.blog_articles_limit | default: 6 | plus: 0
+    if articles_limit <= 0
+      assign articles_limit = 6
+    endif
+    assign fallback_blog_image = '84b8a9bc0d056c71d24e1cf463215b847470e934.jpg' | asset_url
+    assign blog_article_count = 0
+    if selected_blog and selected_blog.articles_count
+      assign blog_article_count = selected_blog.articles_count | plus: 0
+    endif
+  -%}
+
+  <section class="home-hero home-hero--blog">
+    <div class="home-hero__media">
+      <img
+        src="{{ fallback_blog_image }}"
+        alt="Dicas de Bricolagem, Casa e Jardim"
+        loading="lazy"
+        style="width:100%;height:100%;object-fit:cover;"
+      >
+    </div>
+    <div class="home-hero__overlay"></div>
+    <div class="page-width">
+      <div class="home-hero__inner" style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:420px;padding:64px 16px;">
+        <h1
+          class="home-hero__heading"
+          style="font-family:Poppins;font-weight:600;font-size:36px;line-height:140%;letter-spacing:0;text-align:center;"
+        >
+          Dicas de Bricolagem, Casa e Jardim
+        </h1>
+        <p
+          class="home-hero__text"
+          style="font-family:Poppins;font-weight:500;font-size:20px;line-height:135%;letter-spacing:0;text-align:center;"
+        >
+          Inspire-se com conteúdos práticos e dicas úteis para os<br />
+          seus projetos de bricolagem, decoração, jardinagem e<br />
+          manutenção da casa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+    {% if selected_blog and blog_article_count > 0 %}
+      <div class="home-blog__grid" style="margin: 40px 0 60px 0;">
+        {%- for article in selected_blog.articles limit: articles_limit -%}
+          <article class="home-blog__card">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 900 | image_tag: alt: article.title, loading: 'lazy' }}
+            {%- endif -%}
+            <div class="home-blog__body">
+              <h3>{{ article.title }}</h3>
+              <small>{{ article.published_at | time_tag: format: 'date' }}</small>
+            </div>
+            <a href="{{ article.url }}" class="gb-btn gb-btn--ghost" style="margin: 12px;">Ler artigo</a>
+          </article>
+        {%- endfor -%}
+      </div>
+      {%- if blog_article_count <= articles_limit -%}
+        <p style="text-align:center;">Mais artigos em breve.</p>
+      {%- endif -%}
+    {% else %}
+      <p style="text-align:center;">Ainda não há artigos publicados neste blog.</p>
+    {% endif %}
+  </div>
+
+  <section class="section-space">
+    <div class="page-width">
+      <div class="home-newsletter">
+        <div class="home-newsletter__inner">
+          <h2>Receba dicas e promoções exclusivas</h2>
+          <p>Subscreva a nossa newsletter e receba novidades, promoções <br> e inspirações para os seus projetos de bricolagem.</p>
+          <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="home-newsletter__form">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" name="contact[email]" placeholder="Email" required="">
+            <button class="gb-btn" type="submit">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
 {% else %}
   <div class="page-width page-width--narrow section-{{ section.id }}-padding">
     <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -949,6 +1129,20 @@
     "id": "promo_collection",
     "label": "Coleção de promoções (para /promocoes)",
     "info": "Selecione a coleção que contém os produtos de promoções. Se vazio, usa a coleção com handle 'promocoes'."
+  },
+  {
+    "type": "blog",
+    "id": "blog_handle",
+    "label": "Blog a usar na página Blog"
+  },
+  {
+    "type": "range",
+    "id": "blog_articles_limit",
+    "label": "Número de artigos a mostrar (inclui o destaque)",
+    "min": 3,
+    "max": 12,
+    "step": 1,
+    "default": 6
   },
   {
     "type": "header",

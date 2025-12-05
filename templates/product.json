@@ -148,6 +148,10 @@
         "usp-3"
       ]
     },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
   },
-  "order": ["main", "product-details", "related-products", "product-usps"]
+  "order": ["main", "product-details", "related-products", "product-usps", "footer"]
 }
