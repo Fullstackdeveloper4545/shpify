@@ -1,0 +1,82 @@
+<section class="home-catalogs">
+  <div class="page-width">
+    <div class="home-categories__header" style="text-align:left;">
+      <h2 class="home-categories__title">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="home-catalogs__grid">
+      {% for block in section.blocks %}
+        <div class="home-catalogs__card" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy' }}
+          {% elsif block.settings.image_asset != blank %}
+            <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.button_label | escape }}" loading="lazy">
+          {% endif %}
+          {% if block.settings.button_label != blank %}
+            <a class="gb-btn" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home catálogos",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Consulte os catálogos"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "catalog",
+      "name": "Catálogo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagem"
+        },
+        {
+          "type": "text",
+          "id": "image_asset",
+          "label": "Nome do ficheiro do catálogo (ativo do tema)",
+          "info": "Ex.: catalogo.png (use se já estiver em assets)"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Texto do botão",
+          "default": "Ver produtos"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Home catálogos",
+      "blocks": [
+        {
+          "type": "catalog"
+        },
+        {
+          "type": "catalog"
+        },
+        {
+          "type": "catalog"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
