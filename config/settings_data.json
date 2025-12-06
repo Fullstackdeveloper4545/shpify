@@ -171,6 +171,38 @@
       "show_cart_note": false,
       "cart_drawer_collection": "",
       "sections": {
+        "header-group": {
+          "type": "header-group",
+          "sections": {
+            "header": {
+              "type": "header",
+              "settings": {
+                "show_topbar": true,
+                "topbar_text": "Portes de envio gratuitos",
+                "topbar_dismissible": true,
+                "search_placeholder": "Pesquisar",
+                "show_account_icon": true
+              }
+            }
+          },
+          "order": [
+            "header"
+          ]
+        },
+        "footer-group": {
+          "type": "footer-group",
+          "sections": {
+            "footer": {
+              "type": "footer",
+              "settings": {
+                "bottom_text": "Globalbrico © 2025. Todos os direitos reservados."
+              }
+            }
+          },
+          "order": [
+            "footer"
+          ]
+        },
         "main-password-header": {
           "type": "main-password-header",
           "settings": {
