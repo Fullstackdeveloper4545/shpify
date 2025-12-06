@@ -314,7 +314,11 @@
       {{ content_for_layout }}
     </main>
 
-    {% sections 'footer-group' %}
+    {%- comment -%}
+      Using direct footer section to guarantee it renders even if the footer-group
+      config is missing in settings_data on the published theme.
+    {%- endcomment -%}
+    {% section 'footer' %}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
